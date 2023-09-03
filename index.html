@@ -34,6 +34,11 @@
 			var time_idx = 0;
 			var times = [50,30];
 
+			// from https://www.youtube.com/watch?v=A-TwKH5g5ro
+			var ticktack = new Audio("ticktack.mp3");
+			ticktack.loop = true;
+			var ding = new Audio("ding.mp3");
+
 			// from: https://mdn.github.io/dom-examples/screen-wake-lock-api/script.js
 			var wakeLockSupported = 'wakeLock' in navigator;
 			if(wakeLockSupported) {
@@ -61,20 +66,24 @@
 
 				if(timer) clearInterval(timer);
 
+				ticktack.pause();
 				if(time != times[time_idx]) {
 					nextTimer();
 					update();
 				} else {
 					timer = setInterval(tick, 1 * 1000);
+					ticktack.play();
 				}
 			}
 
 			function tick() {
 				time--;
 
-				if(time<0) {
+				if(time<=0) {
 					clearInterval(timer);
 					nextTimer();
+					ticktack.pause();
+					ding.play();
 				}
 				
 				update();
