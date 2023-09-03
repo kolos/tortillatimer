@@ -37,9 +37,11 @@
 			// from: https://mdn.github.io/dom-examples/screen-wake-lock-api/script.js
 			var wakeLockSupported = 'wakeLock' in navigator;
 			if(wakeLockSupported) {
-				let wakeLock = null;
+				console.log('wakelock supported');
+				var wakeLock = null;
 
-				const requestWakeLock = async () => {
+				var requestWakeLock = async () => {
+					console.log('wakelock req');
 					try {
 						wakeLock = await navigator.wakeLock.request('screen');
 					} catch (err) {
@@ -47,7 +49,7 @@
 					}
 				}
 
-				const handleVisibilityChange = () => {
+				var handleVisibilityChange = () => {
 					if (wakeLock !== null && document.visibilityState === 'visible') {
 						requestWakeLock();
 					}
