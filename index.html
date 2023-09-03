@@ -37,11 +37,9 @@
 			// from: https://mdn.github.io/dom-examples/screen-wake-lock-api/script.js
 			var wakeLockSupported = 'wakeLock' in navigator;
 			if(wakeLockSupported) {
-				console.log('wakelock supported');
 				var wakeLock = null;
 
 				var requestWakeLock = async () => {
-					console.log('wakelock req');
 					try {
 						wakeLock = await navigator.wakeLock.request('screen');
 					} catch (err) {
