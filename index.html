@@ -10,13 +10,22 @@
 			* {
 				box-sizing: border-box;
 				font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-				background-color: black;
 				user-select: none;
 			}
 
 			html, body{
+				background-color: black;
 				height: 100%;
 				margin: 0;
+			}
+
+			.blink{
+				animation: blinkingBackground 0.333s 3;
+			}
+
+			@keyframes blinkingBackground{
+				0%		{ background-color: black;}
+				50%		{ background-color: white;}
 			}
 			
 			#content, #moon{
@@ -79,10 +88,12 @@
 
 			function tick() {
 				time--;
+				document.body.className = "";
 
 				if(time<=0) {
 					clearInterval(timer);
 					nextTimer();
+					document.body.className = "blink";
 					ding.play();
 				}
 				
