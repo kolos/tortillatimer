@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="hu">
+    <head>
+        <title>
+            Tortilla timer
+        </title>
+        <meta charset="utf8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			* {
+				box-sizing: border-box;
+				font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+				background-color: black;
+			}
+
+			html, body{
+				height: 100%;
+				margin: 0;
+			}
+			
+			#content{
+				text-align: center;
+			}
+			
+			#timer {
+				color: lime;
+				font-size: 30vw;
+			}
+		</style>
+		<script type="text/javascript">
+			var timer = null;
+			var time = 0;
+
+			var time_idx = 0;
+			var times = [50,30];
+
+			// from: https://mdn.github.io/dom-examples/screen-wake-lock-api/script.js
+			var wakeLockSupported = 'wakeLock' in navigator;
+			if(wakeLockSupported) {
+				let wakeLock = null;
+
+				const requestWakeLock = async () => {
+					try {
+						wakeLock = await navigator.wakeLock.request('screen');
+					} catch (err) {
+						//
+					}
+				}
+
+				const handleVisibilityChange = () => {
+					if (wakeLock !== null && document.visibilityState === 'visible') {
+						requestWakeLock();
+					}
+				}
+
+				document.addEventListener('visibilitychange', handleVisibilityChange);
+			}
+
+			function start() {
+				if(wakeLockSupported) requestWakeLock();
+
+				if(timer) clearInterval(timer);
+
+				if(time != times[time_idx]) {
+					nextTimer();
+					update();
+				} else {
+					timer = setInterval(tick, 1 * 1000);
+				}
+			}
+
+			function tick() {
+				time--;
+
+				if(time<0) {
+					clearInterval(timer);
+					nextTimer();
+				}
+				
+				update();
+			}
+
+			function formatRemaining(time) {
+				var minutes = (time / 60) | 0;
+				var seconds = (time % 60);
+				return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+			}
+
+			function nextTimer() {
+				time_idx++;
+				if(time_idx>=times.length) time_idx = 0;
+
+				time = times[time_idx];
+			}
+
+			function update() {
+				document.getElementById("timer").innerHTML = formatRemaining(time);
+			}
+			
+			window.onload = function() {
+				time = times[time_idx];
+				update();
+			}
+		</script>
+    </head>
+    <body onclick="start()">
+		<div id="content">
+			<span id="timer">##:##</span>
+		</div>
+	</body>
+</html>
