@@ -34,6 +34,7 @@
 
 			#side {
 				font-size: 5vw;
+				color: white;
 			}
 			
 			#timer {
@@ -44,6 +45,7 @@
 		<script type="text/javascript">
 			var timer = null;
 			var time = 0;
+			var tortillas = 0;
 
 			var time_idx = 0;
 			var times = [50,30];
@@ -82,6 +84,7 @@
 					nextTimer();
 					update();
 				} else {
+					if(time_idx == 0) tortillas++;
 					timer = setInterval(tick, 1 * 1000);
 				}
 			}
@@ -116,7 +119,7 @@
 			function update() {
 				document.getElementById("timer").innerHTML = formatRemaining(time);
 
-				document.getElementById("side").innerHTML = time_idx == 0 ? "🌕" : "🌑";
+				document.getElementById("side").innerHTML = ("" + tortillas + "x ") + (time_idx == 0 ? "🌕" : "🌑");
 			}
 			
 			window.onload = function() {
